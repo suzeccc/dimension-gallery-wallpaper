@@ -30,7 +30,24 @@ function onImageLoad(event) {
   addHistory(wallpaper.value)
 }
 
+function previewImage() {
+  if (!wallpaper.value?.url) return
+  uni.previewImage({
+    urls: [wallpaper.value.url],
+    current: wallpaper.value.url,
+  })
+}
+
 function goHome() {
+  uni.reLaunch({ url: '/pages/index/index' })
+}
+
+function goBack() {
+  const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : []
+  if (pages.length > 1) {
+    uni.navigateBack()
+    return
+  }
   uni.reLaunch({ url: '/pages/index/index' })
 }
 
@@ -48,7 +65,8 @@ async function saveImage() {
 }
 
 onLoad(params => {
-  wallpaper.value = restore(params?.id)
+  const id = params?.id ? decodeURIComponent(params.id) : ''
+  wallpaper.value = restore(id)
   if (!wallpaper.value) {
     error.value = '这张壁纸暂时找不到了'
     return
@@ -61,12 +79,12 @@ onLoad(params => {
   <view class="detail-page">
     <view v-if="error" class="state-card">
       <text>{{ error }}</text>
-      <button @tap="goHome">返回首页</button>
+      <button @tap="goBack">返回上级</button>
     </view>
 
     <template v-else-if="wallpaper">
-      <button class="back-button" @tap="goHome">返回</button>
-      <image class="preview" :src="wallpaper.url" mode="aspectFit" @load="onImageLoad" />
+      <button class="back-button" @tap="goBack">返回</button>
+      <image class="preview" :src="wallpaper.url" mode="aspectFit" @tap="previewImage" @load="onImageLoad" />
 
       <view class="info-panel">
         <text class="title">{{ wallpaper.title }}</text>

@@ -3,6 +3,18 @@ import { shuffle } from '../utils/shuffle.js'
 
 const ALCY_BASE = 'https://t.alcy.cc'
 const YEQING_BASE = 'https://api.yppp.net'
+const ELAINA_MOBILE_URL = 'https://api.elaina.cat/random/mobile'
+const ELAINA_PC_URL = 'https://api.elaina.cat/random/pc'
+const MOEHU_PC_URL = 'https://img.moehu.org/pic.php?id=pc'
+const MOEHU_BEAUTY_URL = 'https://img.moehu.org/pic.php?id=xjj'
+const MOEHU_BLACK_URL = 'https://img.moehu.org/pic.php?id=acghs'
+const MOEHU_WHITE_URL = 'https://img.moehu.org/pic.php?id=acgbs'
+const MOEHU_GAME_URLS = [
+  'https://img.moehu.org/pic.php?id=ys',
+  'https://img.moehu.org/pic.php?id=mrfz',
+]
+const YAOHUD_R18_URL = 'https://acg.yaohud.cn/R18/setu.php'
+const YAOHUD_AI_R18_URL = 'https://acg.yaohud.cn/dm/r18.php'
 const YE_QING_CACHE_TTL = 1000 * 60 * 60 * 6
 
 const categoryOrientation = {
@@ -107,4 +119,122 @@ export async function fetchYeqingWallpapers({ orientation = 'landscape', count =
     .slice(0, clampCount(count, 30))
     .map(url => normalizeWallpaper({ url, source: 'yeqing', category, orientation }))
     .filter(Boolean)
+}
+
+export function fetchElainaMobileWallpapers({ count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${ELAINA_MOBILE_URL}?i=${now}-${index}`),
+      source: 'elaina',
+      category: '竖屏',
+      title: 'Elaina 竖屏壁纸',
+      orientation: 'portrait',
+    })
+  }).filter(Boolean)
+}
+
+export function fetchElainaPcWallpapers({ count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${ELAINA_PC_URL}?i=${now}-${index}`),
+      source: 'elaina',
+      category: '横屏',
+      title: 'Elaina 横屏壁纸',
+      orientation: 'landscape',
+    })
+  }).filter(Boolean)
+}
+
+export function fetchMoehuWallpapers({ orientation = 'portrait', count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${MOEHU_BEAUTY_URL}&i=${now}-${index}`),
+      source: 'moehu',
+      category: '美女',
+      title: '美女壁纸',
+      orientation,
+    })
+  }).filter(Boolean)
+}
+
+export function fetchMoehuPcWallpapers({ category = '推荐', count = 4 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${MOEHU_PC_URL}&i=${now}-${index}`),
+      source: 'moehu',
+      category,
+      title: 'Moehu 横屏壁纸',
+      orientation: 'landscape',
+    })
+  }).filter(Boolean)
+}
+
+export function fetchMoehuGameWallpapers({ count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    const endpoint = MOEHU_GAME_URLS[index % MOEHU_GAME_URLS.length]
+    return normalizeWallpaper({
+      url: cacheBust(`${endpoint}&i=${now}-${index}`),
+      source: 'moehu',
+      category: '游戏',
+      title: '游戏横屏壁纸',
+      orientation: 'landscape',
+    })
+  }).filter(Boolean)
+}
+
+export function fetchBlackWallpapers({ orientation = 'portrait', count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${MOEHU_BLACK_URL}&i=${now}-${index}`),
+      source: 'moehu',
+      category: '黑色',
+      title: '黑色壁纸',
+      orientation,
+    })
+  }).filter(Boolean)
+}
+
+export function fetchWhiteWallpapers({ orientation = 'portrait', count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${MOEHU_WHITE_URL}&i=${now}-${index}`),
+      source: 'moehu',
+      category: '白色',
+      title: '白色壁纸',
+      orientation,
+    })
+  }).filter(Boolean)
+}
+
+export function fetchR18Wallpapers({ orientation = 'portrait', count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${YAOHUD_R18_URL}?i=${now}-${index}`),
+      source: 'yaohud',
+      category: 'R18',
+      title: 'R18 壁纸',
+      orientation,
+    })
+  }).filter(Boolean)
+}
+
+export function fetchAiR18Wallpapers({ orientation = 'portrait', count = 12 } = {}) {
+  const now = Date.now()
+  return Array.from({ length: clampCount(count, 30) }, (_, index) => {
+    return normalizeWallpaper({
+      url: cacheBust(`${YAOHUD_AI_R18_URL}?i=${now}-${index}`),
+      source: 'yaohud',
+      category: 'AI R18',
+      title: 'AI R18 壁纸',
+      orientation,
+    })
+  }).filter(Boolean)
 }

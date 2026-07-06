@@ -15,6 +15,13 @@
       }
     },
     {
+      "path": "pages/wallpapers/wallpapers",
+      "style": {
+        "navigationBarTitleText": "壁纸列表",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/favorites/favorites",
       "style": {
         "navigationBarTitleText": "收藏",

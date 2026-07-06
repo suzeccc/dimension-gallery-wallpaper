@@ -12,6 +12,22 @@ page {
 }
 
 button {
+  cursor: pointer;
   font: inherit;
+  transition: transform 120ms ease, filter 120ms ease, opacity 120ms ease;
+}
+
+button:not([disabled]):hover {
+  filter: brightness(1.08);
+}
+
+button:not([disabled]):active {
+  transform: scale(0.96);
+  filter: brightness(1.16);
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.64;
 }
 </style>
