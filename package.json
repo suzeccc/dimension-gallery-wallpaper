@@ -1,6 +1,7 @@
 {
   "name": "dimension-gallery-uniapp",
   "version": "0.1.0",
+  "license": "MIT",
   "scripts": {
     "dev:custom": "uni -p",
     "dev:h5": "uni",
